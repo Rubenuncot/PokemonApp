@@ -1,4 +1,4 @@
-package com.ruben.apiremota.data.local
+package com.ruben.apiremota.data.remote
 
 
 data class Pokemon(

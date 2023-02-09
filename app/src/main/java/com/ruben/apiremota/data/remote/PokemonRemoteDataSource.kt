@@ -1,6 +1,4 @@
-package com.ruben.apiremota.data.local
-
-import com.ruben.apiremota.data.remote.ApiService
+package com.ruben.apiremota.data.remote
 
 class PokemonRemoteDatasource( private val apiService: ApiService) {
     suspend fun getPokemons(offset: Int, limit: Int) = apiService.getPokemons(offset, limit)

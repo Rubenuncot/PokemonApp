@@ -1,4 +1,4 @@
-package com.ruben.apiremota.presentation
+package com.ruben.apiremota.ui.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,10 +12,10 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.ruben.apiremota.data.local.Pokemon
+import com.ruben.apiremota.data.local.PokemonEntity
 
 @Composable
-fun PokemonCell (pokemon: Pokemon) {
+fun PokemonCell (pokemon: PokemonEntity) {
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(Modifier.padding(15.dp)) {
             Text(text = "Nombre: " + pokemon.name, fontWeight = FontWeight. Bold)

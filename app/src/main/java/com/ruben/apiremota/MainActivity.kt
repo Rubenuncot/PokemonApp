@@ -10,17 +10,24 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.ruben.apiremota.data.local.PokemonRemoteDatasource
-import com.ruben.apiremota.data.local.RetrofitBuilder
+import com.ruben.apiremota.data.PokemonRepository
+import com.ruben.apiremota.data.local.PokemonDatasource
+import com.ruben.apiremota.data.remote.PokemonRemoteDatasource
+import com.ruben.apiremota.data.remote.RetrofitBuilder
 import com.ruben.apiremota.ui.components.MainScreen
 import com.ruben.apiremota.presentation.PokemonViewModel
 import com.ruben.apiremota.ui.theme.ApiRemotaTheme
 
 class MainActivity : ComponentActivity() {
-    private val apiDatasource = PokemonRemoteDatasource(RetrofitBuilder.apiService)
-    private val viewModel = PokemonViewModel( apiDatasource )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val apiDatasource = PokemonRemoteDatasource(RetrofitBuilder.apiService)
+        val localDatasource = PokemonDatasource(applicationContext)
+        val repository = PokemonRepository(localDatasource, apiDatasource)
+        val viewModel = PokemonViewModel( repository )
+
+
         setContent {
             ApiRemotaTheme() {
                 // A surface container using the 'background' color from the theme

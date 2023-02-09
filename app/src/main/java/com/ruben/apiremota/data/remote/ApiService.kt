@@ -1,7 +1,5 @@
 package com.ruben.apiremota.data.remote
 
-import com.ruben.apiremota.data.local.PageResponse
-import com.ruben.apiremota.data.local.Pokemon
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

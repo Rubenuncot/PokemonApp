@@ -1,6 +1,5 @@
-package com.ruben.apiremota.data.local
+package com.ruben.apiremota.data.remote
 
-import com.ruben.apiremota.data.remote.ApiService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

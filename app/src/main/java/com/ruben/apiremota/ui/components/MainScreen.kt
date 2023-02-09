@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.ruben.apiremota.presentation.PokemonCell
 import com.ruben.apiremota.presentation.PokemonViewModel
 import com.ruben.apiremota.ui.screens.PokemonScreenState
 
