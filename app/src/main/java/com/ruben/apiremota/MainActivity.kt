@@ -10,6 +10,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
 import com.ruben.apiremota.data.PokemonRepository
 import com.ruben.apiremota.data.local.PokemonDatasource
 import com.ruben.apiremota.data.remote.PokemonRemoteDatasource
@@ -29,6 +30,8 @@ class MainActivity : ComponentActivity() {
 
 
         setContent {
+            val navController = rememberNavController()
+
             ApiRemotaTheme() {
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color =

@@ -12,8 +12,8 @@ class PokemonRepository (
     private var maxPages = 1
     private val pokemonIds: MutableList<Int> = mutableListOf()
 
-    suspend fun syncronyze(currentPage: Int = 1){
-        val offset = currentPage * Limit
+    suspend fun syncronyze(currentPage: Int){
+        val offset = currentPage
         val page = pokemonRemoteDatasource.getPokemons(offset, Limit)
         var pokemonUrl: String
 
@@ -27,9 +27,9 @@ class PokemonRepository (
         pokemonLocalDatasource.createAllPokemon(pokemons.toLocalEntity())
     }
 
-    suspend fun getPokemon(currentPage: Int = 1): List<PokemonEntity> {
-        val offset = currentPage * Limit
-        syncronyze()
+    suspend fun getPokemon(currentPage: Int): List<PokemonEntity> {
+        val offset = currentPage
+        syncronyze(offset)
         return pokemonLocalDatasource.getPokemon(offset)
     }
 

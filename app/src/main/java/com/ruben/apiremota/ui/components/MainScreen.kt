@@ -37,7 +37,7 @@ fun MainScreen (viewModel: PokemonViewModel) {
                 ErrorBlock(message = (screenState as PokemonScreenState.Error).message) { viewModel.getPokemon() }
             is PokemonScreenState.Success ->
                 Column(
-                    modifier = Modifier. verticalScroll(scrollState),
+                    modifier = Modifier.fillMaxSize().verticalScroll(scrollState),
                     verticalArrangement = Arrangement.spacedBy( 16.dp)
                 ) {
                     (screenState as PokemonScreenState.Success).pokemon.forEach {

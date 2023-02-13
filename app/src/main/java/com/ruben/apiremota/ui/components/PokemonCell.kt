@@ -1,6 +1,8 @@
 package com.ruben.apiremota.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Card
@@ -18,9 +20,14 @@ import com.ruben.apiremota.data.local.PokemonEntity
 fun PokemonCell (pokemon: PokemonEntity) {
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(Modifier.padding(15.dp)) {
-            Text(text = "Nombre: " + pokemon.name, fontWeight = FontWeight. Bold)
-            Text(text = "Experiencia base: " +pokemon.base_experience.toString())
-            Text(text = "Número de pokedex: " + pokemon.id.toString(), style = TextStyle(color = Color.LightGray, textAlign = TextAlign.Center ))
+            Row() {
+                Column() {
+                    Text(text = "Nombre: " + pokemon.name, fontWeight = FontWeight. Bold)
+                    Text(text = "Experiencia base: " +pokemon.base_experience.toString())
+                    Text(text = "Número de pokedex: " + pokemon.id.toString(), style = TextStyle(color = Color.LightGray, textAlign = TextAlign.Center ))
+                }
+                //TODO: Poner la imagen del pokemon
+            }
         }
     }
 }
