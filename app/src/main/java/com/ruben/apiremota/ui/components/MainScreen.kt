@@ -34,7 +34,7 @@ fun MainScreen (viewModel: PokemonViewModel, navController: NavController) {
         when (screenState) {
             PokemonScreenState.Loading -> CircularProgressIndicator(modifier = Modifier. size(48.dp))
             is PokemonScreenState.Error ->
-                ErrorBlock(message = (screenState as PokemonScreenState.Error).message) { viewModel.getPokemon() }
+                ErrorBlock(message = (screenState as PokemonScreenState.Error).message) { viewModel.getPokemons() }
             is PokemonScreenState.Success ->
                 Column(
                     modifier = Modifier.fillMaxSize().verticalScroll(scrollState),
@@ -46,13 +46,10 @@ fun MainScreen (viewModel: PokemonViewModel, navController: NavController) {
                 }
         }
     }
-    LaunchedEffect(viewModel) {
-        viewModel.getPokemon()
-    }
 
-    if(endReached){
+    if(endReached || viewModel.currentPage == 0){
         LaunchedEffect(viewModel){
-            viewModel.getNextPokemon()
+            viewModel.getPokemons()
         }
     }
 }
