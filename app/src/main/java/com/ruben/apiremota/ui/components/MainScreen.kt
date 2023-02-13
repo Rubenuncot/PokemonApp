@@ -10,12 +10,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.ruben.apiremota.presentation.PokemonViewModel
 import com.ruben.apiremota.ui.screens.PokemonScreenState
 
 @OptIn(ExperimentalLifecycleComposeApi ::class)
 @Composable
-fun MainScreen (viewModel: PokemonViewModel) {
+fun MainScreen (viewModel: PokemonViewModel, navController: NavController) {
     val screenState by viewModel.uiState.collectAsStateWithLifecycle()
     val scrollState = rememberScrollState()
 
@@ -24,7 +25,6 @@ fun MainScreen (viewModel: PokemonViewModel) {
             scrollState.value >= scrollState.maxValue
         }
     }
-
 
     Box(
         contentAlignment = Alignment. Center, modifier = Modifier
@@ -41,7 +41,7 @@ fun MainScreen (viewModel: PokemonViewModel) {
                     verticalArrangement = Arrangement.spacedBy( 16.dp)
                 ) {
                     (screenState as PokemonScreenState.Success).pokemon.forEach {
-                    PokemonCell(it)
+                    PokemonCell(it, navController)
                     }
                 }
         }

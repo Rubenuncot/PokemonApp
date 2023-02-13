@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -14,11 +15,16 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.ruben.apiremota.data.local.PokemonEntity
+import com.ruben.apiremota.ui.theme.Detail
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun PokemonCell (pokemon: PokemonEntity) {
-    Card(modifier = Modifier.fillMaxWidth()) {
+fun PokemonCell (pokemon: PokemonEntity, navController: NavController) {
+    Card(modifier = Modifier.fillMaxWidth(), onClick = {
+        navController.navigate("$Detail/${pokemon.id}")}
+    ) {
         Column(Modifier.padding(15.dp)) {
             Row() {
                 Column() {
