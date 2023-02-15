@@ -9,5 +9,5 @@ import com.ruben.apiremota.presentation.PokemonViewModel
 @Composable
 fun PokeTeamScreen (viewModel: PokemonViewModel, navController: NavController) {
     Text(text = "Tu Equipo Pokémon", fontWeight = FontWeight. Bold)
-    //TODO: To be continued...
+    //TODO: To be continued......
 }
