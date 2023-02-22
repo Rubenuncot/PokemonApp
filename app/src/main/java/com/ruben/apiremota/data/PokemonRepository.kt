@@ -9,9 +9,9 @@ class PokemonRepository (
     private val pokemonLocalDatasource: PokemonDatasource,
     private val pokemonRemoteDatasource: PokemonRemoteDatasource
 ){
-
-    suspend fun sync(offset: Int){
+    suspend fun getPokemons(currentPage: Int): List<PokemonEntity> {
         //TODO: Check max pages
+        val offset = currentPage * Limit
         val apiResponse = pokemonRemoteDatasource.getPokemons(offset, Limit)
         var pokemonUrl: String
         val pokemonIds: MutableList<Int> = mutableListOf()
@@ -24,9 +24,6 @@ class PokemonRepository (
         }
         val pokemons = pokemonRemoteDatasource.getPokemonsByIds(pokemonIds)
         pokemonLocalDatasource.createAllPokemons(pokemons.toLocalEntity())
-    }
-
-    suspend fun getPokemons(offset: Int): List<PokemonEntity> {
         return pokemonLocalDatasource.getPokemons(offset)
     }
 
