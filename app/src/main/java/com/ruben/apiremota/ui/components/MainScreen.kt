@@ -33,7 +33,7 @@ fun MainScreen (viewModel: PokemonViewModel, navController: NavController) {
     ) {
         when (screenState) {
             PokemonScreenState.Loading -> CircularProgressIndicator(modifier = Modifier. size(48.dp))
-            is PokemonScreenState.Error -><
+            is PokemonScreenState.Error ->
                 ErrorBlock(message = (screenState as PokemonScreenState.Error).message) { viewModel.getPokemons() }
             is PokemonScreenState.Success ->
                 Column(
