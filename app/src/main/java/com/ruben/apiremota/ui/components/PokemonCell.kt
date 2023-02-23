@@ -1,6 +1,5 @@
 package com.ruben.apiremota.ui.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -35,7 +34,6 @@ fun PokemonCell (pokemon: PokemonEntity, navController: NavController) {
                     Text(text = "Experiencia base: " +pokemon.base_experience.toString())
                     Text(text = "Número de pokedex: " + pokemon.id.toString(), style = TextStyle(color = Color.LightGray, textAlign = TextAlign.Center ))
                 }
-                //TODO: Poner la imagen del pokemon
             }
         }
     }
