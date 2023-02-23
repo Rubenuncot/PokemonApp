@@ -25,7 +25,7 @@ fun PokemonCell (pokemon: PokemonEntity, navController: NavController) {
     Card(modifier = Modifier.fillMaxWidth(), onClick = {
         navController.navigate("$Detail/${pokemon.id}/${pokemon.name}/${pokemon.height}/${pokemon.weight}")}
     ) {
-        Column(Modifier.padding(15.dp)) {
+        Column(Modifier.padding(16.dp)) {
             Row() {
                 Column() {
                     Text(text = "Nombre: " + pokemon.name, fontWeight = FontWeight. Bold)

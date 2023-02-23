@@ -15,7 +15,7 @@ fun DetailScreen(id: Int , name: String , height: Int, weight: Int ) {
         contentAlignment = Alignment.Center
     ){
         Column() {
-            Text(text = "DETALLES DEL POKEMON.")
+            Text(text = "DETALLES DEL POKEMON")
             Text(text = "Name: $name")
             Text(text = "Pokemon: $id")
             Text(text = "Height: $height")

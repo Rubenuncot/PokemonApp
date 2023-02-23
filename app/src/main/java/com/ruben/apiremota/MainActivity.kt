@@ -61,6 +61,7 @@ class MainActivity : ComponentActivity() {
                     requireNotNull(name)
                     val height = it.arguments?.getInt("height")
                     requireNotNull(height)
+
                     val weight = it.arguments?.getInt("weight")
                     requireNotNull(weight)
 
