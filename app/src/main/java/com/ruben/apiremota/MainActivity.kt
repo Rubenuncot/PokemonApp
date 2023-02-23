@@ -46,12 +46,25 @@ class MainActivity : ComponentActivity() {
                     MainScreen(viewModel = viewModel, navController)
                 }
                 composable(
-                    route = "detail/{id}",
-                    arguments = listOf(navArgument("id") { type = NavType.IntType })
+                    route = "detail/{id}/{name}/{height}/{weight}",
+                    arguments = listOf(
+                        navArgument("id") { type = NavType.IntType },
+                        navArgument("name") { type = NavType.StringType },
+                        navArgument("height") { type = NavType.IntType },
+                        navArgument("weight") { type = NavType.IntType },
+
+                    )
                 ) {
                     val id = it.arguments?.getInt("id")
                     requireNotNull(id)
-                    DetailScreen(id)
+                    val name = it.arguments?.getString("name")
+                    requireNotNull(name)
+                    val height = it.arguments?.getInt("height")
+                    requireNotNull(height)
+                    val weight = it.arguments?.getInt("weight")
+                    requireNotNull(weight)
+
+                    DetailScreen(id, name, height, weight)
                 }
             }
         }

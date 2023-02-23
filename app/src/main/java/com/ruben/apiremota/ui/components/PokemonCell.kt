@@ -23,7 +23,7 @@ import com.ruben.apiremota.ui.theme.Detail
 @Composable
 fun PokemonCell (pokemon: PokemonEntity, navController: NavController) {
     Card(modifier = Modifier.fillMaxWidth(), onClick = {
-        navController.navigate("$Detail/${pokemon.id}")}
+        navController.navigate("$Detail/${pokemon.id}/${pokemon.name}/${pokemon.height}/${pokemon.weight}")}
     ) {
         Column(Modifier.padding(15.dp)) {
             Row() {
