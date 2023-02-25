@@ -16,6 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.ruben.apiremota.data.local.PokemonEntity
 import com.ruben.apiremota.ui.theme.Detail
 
@@ -27,6 +28,8 @@ fun PokemonCell (pokemon: PokemonEntity, navController: NavController) {
     ) {
         Column(Modifier.padding(15.dp)) {
             Row() {
+                AsyncImage(model = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" + pokemon.id + ".png",
+                    contentDescription = "Imagen del pokemon número: " + pokemon.id)
                 Column() {
                     Text(text = "Nombre: " + pokemon.name, fontWeight = FontWeight. Bold)
                     Text(text = "Experiencia base: " +pokemon.base_experience.toString())
