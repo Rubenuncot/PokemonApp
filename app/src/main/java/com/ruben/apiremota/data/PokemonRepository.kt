@@ -27,7 +27,10 @@ class PokemonRepository (
         return pokemonLocalDatasource.getPokemons(offset)
     }
 
-    suspend fun getRandomPokemon(){
+    suspend fun getRandomPokemon(): PokemonEntity{
+        val apiResponse = pokemonRemoteDatasource.getRandomPokemonByIDd()
+        pokemonLocalDatasource.createPokemon(apiResponse)
 
+        return pokemonLocalDatasource.getPokemon(apiResponse.id)
     }
 }

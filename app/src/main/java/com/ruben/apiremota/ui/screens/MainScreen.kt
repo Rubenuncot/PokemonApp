@@ -60,9 +60,15 @@ fun BodyMain(
             .padding(16.dp)
     ) {
         when (screenState) {
-            PokemonScreenState.Loading -> CircularProgressIndicator(modifier = Modifier.size(48.dp))
+            PokemonScreenState.Loading -> Column (
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ){
+                LoadingAnimation()
+            }
             is PokemonScreenState.Error ->
-                ErrorBlock(message = (screenState as PokemonScreenState.Error).message) { viewModel.getPokemons() }
+                ErrorBlock(message = (screenState).message) { viewModel.getPokemons() }
             is PokemonScreenState.Success ->
                 Column(
                     modifier = Modifier

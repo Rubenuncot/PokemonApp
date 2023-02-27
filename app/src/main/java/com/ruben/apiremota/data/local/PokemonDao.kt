@@ -12,6 +12,9 @@ interface PokemonDao {
     @Query("SELECT * FROM PokemonEntity ORDER BY id LIMIT $Limit OFFSET :offset")
     suspend fun getAll(offset: Int): List<PokemonEntity>
 
+    @Query("SELECT * FROM PokemonEntity WHERE id=:id")
+    suspend fun getPokemon(id: Int): PokemonEntity
+
     @Insert(onConflict = REPLACE)
     suspend fun insert(pokemon: PokemonEntity)
 
