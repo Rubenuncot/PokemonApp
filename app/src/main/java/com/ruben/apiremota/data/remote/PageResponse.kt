@@ -21,6 +21,7 @@ fun List<Pokemon>.toLocalEntity() = map {
         height = it.height,
         weight = it.weight,
         name = it.name,
-        order = it.order
+        order = it.order,
+        flavorTextEntry = it.flavorTextEntry
     )
 }

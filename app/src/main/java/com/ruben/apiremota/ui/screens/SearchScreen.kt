@@ -30,7 +30,6 @@ import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import coil.size.Size
 import com.ruben.apiremota.MainActivity
 import com.ruben.apiremota.R
 import com.ruben.apiremota.data.local.PokemonEntity
@@ -57,11 +56,6 @@ fun SearchScreen(viewModel: PokemonViewModel, navController: NavController, inde
         val randomScreenState by viewModel.randomUiState.collectAsStateWithLifecycle()
         val scrollState = rememberScrollState()
 
-        val endReached by remember {
-            derivedStateOf {
-                scrollState.value >= scrollState.maxValue
-            }
-        }
         if (index == 1) {
             BodyMain(
                 screenState = screenState,
@@ -79,7 +73,8 @@ fun SearchScreen(viewModel: PokemonViewModel, navController: NavController, inde
                         pokemonRandom!!.height,
                         pokemonRandom!!.name,
                         pokemonRandom!!.order,
-                        pokemonRandom!!.weight
+                        pokemonRandom!!.weight,
+                        pokemonRandom!!.flavorTextEntry
                     )
                     if (pokemonList.contains(pokemonRandomEntity)) {
                         pokemonExists = true
@@ -95,13 +90,6 @@ fun SearchScreen(viewModel: PokemonViewModel, navController: NavController, inde
             }
             Body(pokemon = pokemonRandom, viewModel)
         }
-
-        if (endReached || viewModel.currentPage == 0) {
-            LaunchedEffect(viewModel) {
-                viewModel.getPokemons()
-            }
-        }
-
     }
 }
 
@@ -157,7 +145,7 @@ fun Body(pokemon: Pokemon?, viewModel: PokemonViewModel) {
                             if (pokemonEncontrado) {
                                 if (pokemon != null) {
                                     Text(text = "Name: " + pokemon.name, fontWeight = FontWeight.Bold, style = TextStyle(textAlign = TextAlign.Center))
-                                    Text(text = "Pokédex Number: " + pokemon.id)
+                                    Text(text = "Pokedex Number: " + pokemon.id)
 
                                 }
                                 if (pokemonExists) {
@@ -165,7 +153,7 @@ fun Body(pokemon: Pokemon?, viewModel: PokemonViewModel) {
                                     pokemonExists = false
                                 } else {
                                     if (pokemon != null) {
-                                        Text(text = "!!Congratulations, you found: " + pokemon.name, style = TextStyle(textAlign = TextAlign.Center))
+                                        Text(text = "Congratulations, you found: " + pokemon.name + "!!", style = TextStyle(textAlign = TextAlign.Center))
                                     }
                                 }
                             }
@@ -285,13 +273,6 @@ fun BodyMain(
             .size(563.dp)
     ) {
         when (screenState) {
-            PokemonScreenState.Loading -> Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                LoadingAnimation()
-            }
             is PokemonScreenState.Error ->
                 ErrorBlock(message = (screenState).message) { viewModel.getPokemons() }
             is PokemonScreenState.Success ->
@@ -314,6 +295,13 @@ fun BodyMain(
                         }
                     }
                 }
+            PokemonScreenState.Loading -> Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                LoadingAnimation()
+            }
         }
     }
 }

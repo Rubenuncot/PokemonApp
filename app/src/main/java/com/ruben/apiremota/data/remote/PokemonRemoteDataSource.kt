@@ -1,5 +1,6 @@
 package com.ruben.apiremota.data.remote
 
+import com.ruben.apiremota.data.local.FlavorTextEntry
 import kotlin.random.Random
 
 class PokemonRemoteDatasource( private val apiService: ApiService) {
@@ -16,8 +17,11 @@ class PokemonRemoteDatasource( private val apiService: ApiService) {
     }
     fun randomNum(): Int{
         val list = 1 .. 1008
-        val list2 = 1 .. 1008
 
-        return list.random(Random(list2.shuffled().random(Random(list.random()))))
+        return list.random(Random(list.shuffled().random(Random(list.random()))))
+    }
+
+    suspend fun getSpecie(id: Int): List<FlavorTextEntry>{
+        return apiService.getSpecie(id).flavor_text_entries
     }
 }

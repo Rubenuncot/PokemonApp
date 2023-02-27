@@ -96,13 +96,6 @@ fun SearchScreen(viewModel: PokemonViewModel, navController: NavController, inde
             }
             Body(pokemon = pokemonRandom, viewModel)
         }
-
-        if (endReached || viewModel.currentPage == 0) {
-            LaunchedEffect(viewModel) {
-                viewModel.getPokemons()
-            }
-        }
-
     }
 }
 

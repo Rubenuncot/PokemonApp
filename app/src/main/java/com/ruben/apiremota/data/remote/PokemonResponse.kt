@@ -1,5 +1,7 @@
 package com.ruben.apiremota.data.remote
 
+import com.ruben.apiremota.data.local.FlavorTextEntry
+
 
 data class Pokemon(
     val base_experience: Int,
@@ -7,5 +9,6 @@ data class Pokemon(
     val id: Int,
     val name: String,
     val order: Int,
-    val weight: Int
+    val weight: Int,
+    var flavorTextEntry: String
 )

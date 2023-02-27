@@ -12,7 +12,7 @@ class PokemonDatasource constructor(private val applicationContext: Context) {
 
     suspend fun createPokemon(pokemon: Pokemon) {
         val db = getDatabase(applicationContext)
-        db.pokemonDao().insert(PokemonEntity(id = pokemon.id, base_experience = pokemon.base_experience, height = pokemon.height, name = pokemon.name, order = pokemon.order, weight = pokemon.weight))
+        db.pokemonDao().insert(PokemonEntity(id = pokemon.id, base_experience = pokemon.base_experience, height = pokemon.height, name = pokemon.name, order = pokemon.order, weight = pokemon.weight, flavorTextEntry = pokemon.flavorTextEntry))
     }
 
     suspend fun createAllPokemons(pokemons: List<PokemonEntity>){

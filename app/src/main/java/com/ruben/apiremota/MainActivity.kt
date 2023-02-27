@@ -42,12 +42,28 @@ class MainActivity : ComponentActivity() {
                     SearchScreen(viewModel, navController, index)
                 }
                 composable(
-                    route = "detail/{id}",
-                    arguments = listOf(navArgument("id") { type = NavType.IntType })
+                    route = "detail/{id}/{name}/{height}/{weight}/{description}",
+                    arguments = listOf(
+                        navArgument("id") { type = NavType.IntType },
+                        navArgument("name") { type = NavType.StringType },
+                        navArgument("height") { type = NavType.IntType },
+                        navArgument("weight") { type = NavType.IntType },
+                        navArgument("description") { type = NavType.StringType },
+
+                        )
                 ) {
                     val id = it.arguments?.getInt("id")
                     requireNotNull(id)
-                    DetailScreen(id)
+                    val name = it.arguments?.getString("name")
+                    requireNotNull(name)
+                    val height = it.arguments?.getInt("height")
+                    requireNotNull(height)
+                    val weight = it.arguments?.getInt("weight")
+                    requireNotNull(weight)
+                    val description = it.arguments?.getString("description")
+                    requireNotNull(description)
+
+                    DetailScreen(id, name, height, weight, description)
                 }
             }
         }
