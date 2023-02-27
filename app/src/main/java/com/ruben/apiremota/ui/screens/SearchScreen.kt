@@ -146,16 +146,21 @@ fun Body(pokemon: Pokemon?, viewModel: PokemonViewModel) {
                                 if (pokemon != null) {
                                     Text(text = "Name: " + pokemon.name, fontWeight = FontWeight.Bold, style = TextStyle(textAlign = TextAlign.Center))
                                     Text(text = "Pokedex Number: " + pokemon.id)
-
+                                    rolls-=1
                                 }
                                 if (pokemonExists) {
                                     Text(text = "Ohh, you already found this pokemon. But don't worry, now you earn 1 more roll to found a new pokemon.", style = TextStyle(textAlign = TextAlign.Center))
                                     pokemonExists = false
+                                    rolls+=1
                                 } else {
                                     if (pokemon != null) {
                                         Text(text = "Congratulations, you found: " + pokemon.name + "!!", style = TextStyle(textAlign = TextAlign.Center))
                                     }
                                 }
+                            }
+                            Text(text = "Number of rolls: " + rolls, fontWeight = FontWeight.Bold, style = TextStyle(textAlign = TextAlign.Center))
+                            if (rolls==0){
+                                Text(text = "You don't have any rolls left, wait until tomorrow so you can roll once again", fontWeight = FontWeight.Bold, style = TextStyle(textAlign = TextAlign.Center))
                             }
                         }
                     }
