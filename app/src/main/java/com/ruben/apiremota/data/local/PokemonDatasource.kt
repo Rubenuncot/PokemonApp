@@ -5,9 +5,9 @@ import com.ruben.apiremota.data.remote.Pokemon
 
 class PokemonDatasource constructor(private val applicationContext: Context) {
 
-    suspend fun getPokemons(offset: Int): List<PokemonEntity> {
+    suspend fun getPokemons(): List<PokemonEntity> {
         val db = getDatabase(applicationContext)
-        return db.pokemonDao().getAll(offset)
+        return db.pokemonDao().getAll()
     }
 
     suspend fun createPokemon(pokemon: Pokemon) {

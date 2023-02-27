@@ -9,8 +9,8 @@ import com.ruben.apiremota.data.Limit
 
 @Dao
 interface PokemonDao {
-    @Query("SELECT * FROM PokemonEntity ORDER BY id LIMIT $Limit OFFSET :offset")
-    suspend fun getAll(offset: Int): List<PokemonEntity>
+    @Query("SELECT * FROM PokemonEntity ORDER BY id")
+    suspend fun getAll(): List<PokemonEntity>
 
     @Query("SELECT * FROM PokemonEntity WHERE id=:id")
     suspend fun getPokemon(id: Int): PokemonEntity

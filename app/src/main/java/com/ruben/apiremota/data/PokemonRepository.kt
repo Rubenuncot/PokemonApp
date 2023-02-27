@@ -11,7 +11,6 @@ class PokemonRepository (
     private val pokemonRemoteDatasource: PokemonRemoteDatasource
 ){
     suspend fun getPokemons(currentPage: Int): List<PokemonEntity> {
-        var offset = currentPage * Limit
         /*val apiResponse = pokemonRemoteDatasource.getPokemons(offset, Limit)
         var pokemonUrl: String
         val pokemonIds: MutableList<Int> = mutableListOf()
@@ -24,7 +23,7 @@ class PokemonRepository (
         }
         val pokemons = pokemonRemoteDatasource.getPokemonsByIds(pokemonIds)
         pokemonLocalDatasource.createAllPokemons(pokemons.toLocalEntity())*/
-        var pokemons = pokemonLocalDatasource.getPokemons(offset)
+        var pokemons = pokemonLocalDatasource.getPokemons()
         return pokemons
     }
 
