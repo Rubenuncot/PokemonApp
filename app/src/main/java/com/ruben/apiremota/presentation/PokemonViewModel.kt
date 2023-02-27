@@ -2,9 +2,7 @@ package com.ruben.apiremota.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ruben.apiremota.data.Limit
 import com.ruben.apiremota.data.PokemonRepository
-import com.ruben.apiremota.data.remote.Pokemon
 import com.ruben.apiremota.ui.screens.PokemonRandomScreenState
 import com.ruben.apiremota.ui.screens.PokemonScreenState
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -29,9 +27,12 @@ class PokemonViewModel(private val repository: PokemonRepository) : ViewModel() 
     }
 
     fun getPokemons() {
+
         viewModelScope.launch(handler) {
             val pokemons = repository.getPokemons(currentPage)
             val currentPokemons = if (_uiState.value is PokemonScreenState.Success) {
+                (_uiState.value as PokemonScreenState.Success).pokemon
+            } else if (_uiState.value is PokemonScreenState.Loading){
                 (_uiState.value as PokemonScreenState.Success).pokemon
             } else emptyList()
             var totalPokemons = currentPokemons + pokemons

@@ -29,16 +29,6 @@ fun MainScreen (viewModel: PokemonViewModel, navController: NavController) {
             scrollState.value >= scrollState.maxValue
         }
     }
-    Scaffold(
-        bottomBar = { BottomBar(navController = navController) }
-    ) {
-        BodyMain(
-            screenState = screenState,
-            navController = navController,
-            scrollState = scrollState,
-            viewModel = viewModel
-        )
-    }
 
     if (endReached || viewModel.currentPage == 0) {
         LaunchedEffect(viewModel) {
@@ -47,39 +37,3 @@ fun MainScreen (viewModel: PokemonViewModel, navController: NavController) {
     }
 }
 
-@Composable
-fun BodyMain(
-    screenState: PokemonScreenState,
-    navController: NavController,
-    scrollState: ScrollState,
-    viewModel: PokemonViewModel
-) {
-    Box(
-        contentAlignment = Alignment.Center, modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-        when (screenState) {
-            PokemonScreenState.Loading -> Column (
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ){
-                LoadingAnimation()
-            }
-            is PokemonScreenState.Error ->
-                ErrorBlock(message = (screenState).message) { viewModel.getPokemons() }
-            is PokemonScreenState.Success ->
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .verticalScroll(scrollState),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    (screenState as PokemonScreenState.Success).pokemon.forEach {
-                        PokemonCell(it, navController)
-                    }
-                }
-        }
-    }
-}

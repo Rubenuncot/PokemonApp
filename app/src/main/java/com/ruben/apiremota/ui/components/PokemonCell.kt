@@ -31,7 +31,7 @@ fun PokemonCell (pokemon: PokemonEntity, navController: NavController) {
         shape = RoundedCornerShape(20),
     ) {
         Column(
-            Modifier.padding(15.dp),
+            Modifier.padding(10.dp),
             verticalArrangement = Arrangement.Center,
         ) {
             Row(
