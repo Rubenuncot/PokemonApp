@@ -9,4 +9,11 @@ class PokemonRemoteDatasource( private val apiService: ApiService) {
         }
         return pokemons
     }
+    suspend fun getRandomPokemonByIDd(): Pokemon {
+        val pokemon: Pokemon
+        val ids = 1 .. 1008
+        val id = ids.random()
+        pokemon = apiService.getPokemon(id)
+        return pokemon
+    }
 }

@@ -27,4 +27,7 @@ class PokemonRepository (
         return pokemonLocalDatasource.getPokemons(offset)
     }
 
+    suspend fun getRandomPokemon(){
+
+    }
 }

@@ -1,7 +1,5 @@
 package com.ruben.apiremota.ui.screens
 
-import androidx.compose.foundation.interaction.Interaction
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,6 +22,8 @@ import com.ruben.apiremota.MainActivity
 import com.ruben.apiremota.R
 import com.ruben.apiremota.navigation.AppScreens
 import com.ruben.apiremota.presentation.PokemonViewModel
+import com.ruben.apiremota.ui.theme.Rolls
+var rolls = Rolls
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
@@ -68,9 +68,8 @@ fun SearchScreen(viewModel: PokemonViewModel, navController: NavController, inde
 
 @Composable
 fun Body() {
-    val interactionSource = remember { MutableInteractionSource() }
-    val interactions = remember { mutableStateListOf<Interaction>() }
-
+    var click by remember{ mutableStateOf(false) }
+    
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(50.dp),
@@ -83,15 +82,19 @@ fun Body() {
             )
         }
 
+        if (click){
+            Text(text = "Pokemon Encontrado: ")
+            Text(text = "Mensaje de pokemon encontrado")
+        }
+
         Button(
-            onClick = { },
+            onClick = { click = true },
             shape = RoundedCornerShape(100),
             colors = ButtonDefaults.buttonColors(
                 contentColor = Color.Black,
                 containerColor = Color(0xFFECE3F6)
             ),
             modifier = Modifier.shadow(elevation = 10.dp, shape = RoundedCornerShape(100)),
-            interactionSource = interactionSource
         ) {
             Column(
                 verticalArrangement = Arrangement.Center,
@@ -104,6 +107,8 @@ fun Body() {
                 )
             }
         }
+
+
     }
 }
 
@@ -135,4 +140,3 @@ fun BottomBar(navController: NavController) {
         }
     }
 }
-
