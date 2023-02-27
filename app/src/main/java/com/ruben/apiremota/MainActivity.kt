@@ -12,13 +12,15 @@ import com.ruben.apiremota.data.PokemonRepository
 import com.ruben.apiremota.data.local.PokemonDatasource
 import com.ruben.apiremota.data.remote.PokemonRemoteDatasource
 import com.ruben.apiremota.data.remote.RetrofitBuilder
+import com.ruben.apiremota.navigation.AppScreens
 import com.ruben.apiremota.presentation.PokemonViewModel
-import com.ruben.apiremota.ui.components.DetailScreen
-import com.ruben.apiremota.ui.components.MainScreen
-import com.ruben.apiremota.ui.theme.Main
+import com.ruben.apiremota.ui.screens.DetailScreen
+import com.ruben.apiremota.ui.screens.SearchScreen
 
 class MainActivity : ComponentActivity() {
-
+    companion object {
+        var index: Int = 0
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,15 +29,17 @@ class MainActivity : ComponentActivity() {
         val repository = PokemonRepository(localDatasource, apiDatasource)
         val viewModel = PokemonViewModel(repository)
 
+
+
         setContent {
             val navController = rememberNavController()
 
             NavHost(
                 navController = navController,
-                startDestination = Main
+                startDestination = AppScreens.Search.route
             ) {
-                composable(Main) {
-                    MainScreen(viewModel = viewModel, navController)
+                composable(AppScreens.Search.route) {
+                    SearchScreen(viewModel, navController, index)
                 }
                 composable(
                     route = "detail/{id}",
