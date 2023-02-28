@@ -5,7 +5,6 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy.REPLACE
 import androidx.room.Query
-import com.ruben.apiremota.data.Limit
 
 @Dao
 interface PokemonDao {

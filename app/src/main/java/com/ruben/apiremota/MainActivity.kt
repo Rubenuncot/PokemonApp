@@ -1,8 +1,10 @@
 package com.ruben.apiremota
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -10,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.ruben.apiremota.data.PokemonRepository
 import com.ruben.apiremota.data.local.PokemonDatasource
+import com.ruben.apiremota.data.local.RollsDatasource
 import com.ruben.apiremota.data.remote.PokemonRemoteDatasource
 import com.ruben.apiremota.data.remote.RetrofitBuilder
 import com.ruben.apiremota.navigation.AppScreens
@@ -17,21 +20,25 @@ import com.ruben.apiremota.presentation.PokemonViewModel
 import com.ruben.apiremota.ui.screens.DetailScreen
 import com.ruben.apiremota.ui.screens.SearchScreen
 import com.ruben.apiremota.ui.theme.MaxRolls
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.util.Date
 
 class MainActivity : ComponentActivity() {
     companion object {
         var index: Int = 0
         var rolls: Int = MaxRolls
+        var timeNow: LocalDateTime? = null
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val apiDatasource = PokemonRemoteDatasource(RetrofitBuilder.apiService)
         val localDatasource = PokemonDatasource(applicationContext)
-        val repository = PokemonRepository(localDatasource, apiDatasource)
+        val rollsDatasource = RollsDatasource(applicationContext)
+        val repository = PokemonRepository(localDatasource, apiDatasource, rollsDatasource)
         val viewModel = PokemonViewModel(repository)
-
-
 
         setContent {
             val navController = rememberNavController()

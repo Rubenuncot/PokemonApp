@@ -1,15 +1,14 @@
 package com.ruben.apiremota.ui.screens
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.ScrollState
-import androidx.compose.foundation.border
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
@@ -27,6 +26,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.material.Card
+import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.Notifications
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -39,12 +40,19 @@ import com.ruben.apiremota.navigation.AppScreens
 import com.ruben.apiremota.presentation.PokemonViewModel
 import com.ruben.apiremota.ui.components.ErrorBlock
 import com.ruben.apiremota.ui.components.PokemonCell
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 var added = false
 var pokemonRandom: Pokemon? = null
 var pokemonList = mutableListOf<PokemonEntity>()
 var pokemonExists = false
+@RequiresApi(Build.VERSION_CODES.O)
+val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun SearchScreen(viewModel: PokemonViewModel, navController: NavController, index: Int) {
@@ -92,11 +100,14 @@ fun SearchScreen(viewModel: PokemonViewModel, navController: NavController, inde
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun Body(pokemon: Pokemon?, viewModel: PokemonViewModel) {
     var pokemonEncontrado by remember {
         mutableStateOf(false)
     }
+    val openDialog = remember { mutableStateOf(false) }
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(50.dp),
@@ -125,6 +136,10 @@ fun Body(pokemon: Pokemon?, viewModel: PokemonViewModel) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
+                        Text(
+                            text = "" + MainActivity.rolls + " rolls",
+                            modifier = Modifier.background(Color(0xFFFFFBD1), shape = RoundedCornerShape(100)).padding(3.dp)
+                        )
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
@@ -137,38 +152,12 @@ fun Body(pokemon: Pokemon?, viewModel: PokemonViewModel) {
                                         verticalArrangement = Arrangement.Center
                                     ) {
                                         if (pokemon == null) {
-                                            Card (
-                                                backgroundColor = Color(0xFFFFFECF),
-                                                contentColor = Color(0xFF565656),
-                                                shape = RoundedCornerShape(100),
-                                                modifier = Modifier.shadow(elevation = 10.dp, shape = RoundedCornerShape(100))
-                                            ){
-                                                Text(
-                                                    text = "Number of rolls: " + MainActivity.rolls,
-                                                    fontWeight = FontWeight.Bold,
-                                                    style = TextStyle(textAlign = TextAlign.Center),
-                                                    modifier = Modifier.padding(3.dp)
-                                                )
-                                            }
                                             AsyncImage(
                                                 model = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
                                                 contentDescription = null,
                                                 colorFilter = ColorFilter.tint(Color.Black)
                                             )
                                         } else {
-                                            Card (
-                                                backgroundColor = Color(0xFFFFFECF),
-                                                contentColor = Color(0xFF565656),
-                                                shape = RoundedCornerShape(100),
-                                                modifier = Modifier.shadow(elevation = 10.dp, shape = RoundedCornerShape(100))
-                                            ){
-                                                Text(
-                                                    text = "Number of rolls: " + MainActivity.rolls,
-                                                    fontWeight = FontWeight.Bold,
-                                                    style = TextStyle(textAlign = TextAlign.Center),
-                                                    modifier = Modifier.padding(3.dp)
-                                                )
-                                            }
                                             AsyncImage(
                                                 model = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" + pokemon.id + ".png",
                                                 contentDescription = null,
@@ -193,21 +182,50 @@ fun Body(pokemon: Pokemon?, viewModel: PokemonViewModel) {
                                                 pokemonExists = false
                                                 MainActivity.rolls += 1
                                             } else {
-                                                if (pokemon != null) {
-                                                    Text(
-                                                        text = "Congratulations, you found: " + pokemon.name + "!!",
-                                                        style = TextStyle(textAlign = TextAlign.Center)
-                                                    )
-                                                }
+                                                Text(
+                                                    text = "Congratulations!!!!, you found a new pokemon, let's see it",
+                                                    style = TextStyle(textAlign = TextAlign.Center)
+                                                )
                                             }
                                         }
-                                        if (MainActivity.rolls == 0) {
-                                            Text(
-                                                text = "You don't have any rolls left, wait until tomorrow so you can roll once again",
-                                                fontWeight = FontWeight.Bold,
-                                                style = TextStyle(textAlign = TextAlign.Center)
+                                        if (openDialog.value) {
+                                            //Text(
+                                                //text = "You don't have any rolls left, wait until tomorrow so you can roll once again",
+                                                //fontWeight = FontWeight.Bold,
+                                                //style = TextStyle(textAlign = TextAlign.Center)
+                                            //)
+                                            AlertDialog(
+                                                onDismissRequest = {
+                                                    // Dismiss the dialog when the user clicks outside the dialog or on the back
+                                                    // button. If you want to disable that functionality, simply use an empty
+                                                    // onDismissRequest.
+                                                    openDialog.value = false
+                                                },
+                                                title = {
+                                                    Text(text = "Rolls")
+                                                },
+                                                text = {
+                                                    Text(text = "You don't have any rolls left, wait until tomorrow so you can roll once again")
+                                                },
+                                                confirmButton = {
+                                                    TextButton(
+                                                        onClick = {
+                                                            openDialog.value = false
+                                                        }
+                                                    ) {
+                                                        Text("Confirm")
+                                                    }
+                                                },
+                                                dismissButton = {
+                                                    TextButton(
+                                                        onClick = {
+                                                            openDialog.value = false
+                                                        }
+                                                    ) {
+                                                        Text("Dismiss")
+                                                    }
+                                                }
                                             )
-
                                         }
                                     }
                                 }
@@ -221,6 +239,12 @@ fun Body(pokemon: Pokemon?, viewModel: PokemonViewModel) {
                             viewModel.getRandomPokemon()
                             pokemonEncontrado = true
                             MainActivity.rolls -= 1
+                            if (MainActivity.rolls == 0){
+                                openDialog.value = true
+                            } else if(MainActivity.rolls == 4){
+                                MainActivity.timeNow = LocalDateTime.now()
+                            }
+                            viewModel.inserRolls(MainActivity.rolls, openDialog.value)
                         },
                         shape = RoundedCornerShape(100),
                         colors = ButtonDefaults.buttonColors(
