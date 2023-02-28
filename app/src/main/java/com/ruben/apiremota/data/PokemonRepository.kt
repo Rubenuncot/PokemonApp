@@ -5,7 +5,6 @@ import com.ruben.apiremota.data.local.PokemonDatasource
 import com.ruben.apiremota.data.local.PokemonEntity
 import com.ruben.apiremota.data.remote.Pokemon
 import com.ruben.apiremota.data.remote.PokemonRemoteDatasource
-import com.ruben.apiremota.data.remote.toLocalEntity
 
 class PokemonRepository (
     private val pokemonLocalDatasource: PokemonDatasource,
@@ -24,18 +23,17 @@ class PokemonRepository (
         }
         val pokemons = pokemonRemoteDatasource.getPokemonsByIds(pokemonIds)
         pokemonLocalDatasource.createAllPokemons(pokemons.toLocalEntity())*/
-        val pokemons = pokemonLocalDatasource.getPokemons()
-        return pokemons
+        return pokemonLocalDatasource.getPokemons()
     }
 
     suspend fun getRandomPokemon(): Pokemon {
-        var apiResponse = pokemonRemoteDatasource.getRandomPokemonByIDd()
+        val apiResponse = pokemonRemoteDatasource.getRandomPokemonByIDd()
         apiResponse.flavorTextEntry = getSpecie(apiResponse.id).flavor_text
         pokemonLocalDatasource.createPokemon(apiResponse)
         return apiResponse
     }
     suspend fun getSpecie(id: Int): FlavorTextEntry{
         val apiResponse = pokemonRemoteDatasource.getSpecie(id)
-        return apiResponse[0]
+        return apiResponse[1]
     }
 }

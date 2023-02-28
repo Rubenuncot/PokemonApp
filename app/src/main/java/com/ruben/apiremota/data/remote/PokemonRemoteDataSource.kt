@@ -17,7 +17,6 @@ class PokemonRemoteDatasource( private val apiService: ApiService) {
     }
     fun randomNum(): Int{
         val list = 1 .. 1008
-
         return list.random(Random(list.shuffled().random(Random(list.random()))))
     }
 

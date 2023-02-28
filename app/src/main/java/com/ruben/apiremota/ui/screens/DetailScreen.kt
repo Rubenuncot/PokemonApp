@@ -32,8 +32,8 @@ fun DetailScreen(id: Int , name: String , height: Int, weight: Int, description:
             Card(
                 modifier = Modifier
                     .fillMaxSize()
-                    .shadow(elevation = 10.dp, shape = RoundedCornerShape(20)),
-                shape = RoundedCornerShape(20),
+                    .shadow(elevation = 10.dp, shape = RoundedCornerShape(5)),
+                shape = RoundedCornerShape(5),
                 backgroundColor = Color(0xFFECE3F6)
             ) {
                 Column() {
@@ -48,7 +48,6 @@ fun DetailScreen(id: Int , name: String , height: Int, weight: Int, description:
                     ){
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.SpaceEvenly
                         ) {
                             Text(text = "Pokedex Number #: $id", style = TextStyle(textAlign = TextAlign.Center))
                             Text(text = "Height: $height", style = TextStyle(textAlign = TextAlign.Center))

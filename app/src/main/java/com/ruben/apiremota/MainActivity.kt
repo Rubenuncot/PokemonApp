@@ -16,10 +16,12 @@ import com.ruben.apiremota.navigation.AppScreens
 import com.ruben.apiremota.presentation.PokemonViewModel
 import com.ruben.apiremota.ui.screens.DetailScreen
 import com.ruben.apiremota.ui.screens.SearchScreen
+import com.ruben.apiremota.ui.theme.MaxRolls
 
 class MainActivity : ComponentActivity() {
     companion object {
         var index: Int = 0
+        var rolls: Int = MaxRolls
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

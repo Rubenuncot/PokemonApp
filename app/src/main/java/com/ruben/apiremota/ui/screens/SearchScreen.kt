@@ -26,6 +26,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.material.Card
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -38,9 +39,7 @@ import com.ruben.apiremota.navigation.AppScreens
 import com.ruben.apiremota.presentation.PokemonViewModel
 import com.ruben.apiremota.ui.components.ErrorBlock
 import com.ruben.apiremota.ui.components.PokemonCell
-import com.ruben.apiremota.ui.theme.Rolls
 
-var rolls = Rolls
 var added = false
 var pokemonRandom: Pokemon? = null
 var pokemonList = mutableListOf<PokemonEntity>()
@@ -114,85 +113,139 @@ fun Body(pokemon: Pokemon?, viewModel: PokemonViewModel) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(30.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
-            )  {
+            ) {
                 Card(
                     modifier = Modifier
                         .width(400.dp)
                         .height(450.dp)
                         .padding(20.dp)
-                        .shadow(elevation = 10.dp)
+                        .shadow(elevation = 10.dp),
+                    backgroundColor = Color(0xFFECE3F6)
                 ) {
                     Column(
-                        verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Column(
-                            verticalArrangement = Arrangement.SpaceBetween,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            if (pokemon == null) {
-                                AsyncImage(
-                                    model = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
-                                    contentDescription = null,
-                                    colorFilter = ColorFilter.tint(Color.Black)
-                                )
-                            } else {
-                                AsyncImage(
-                                    model = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" + pokemon.id + ".png",
-                                    contentDescription = null,
-                                )
-                            }
-                            if (pokemonEncontrado) {
-                                if (pokemon != null) {
-                                    Text(text = "Name: " + pokemon.name, fontWeight = FontWeight.Bold, style = TextStyle(textAlign = TextAlign.Center))
-                                    Text(text = "Pokedex Number: " + pokemon.id)
-                                    rolls-=1
-                                }
-                                if (pokemonExists) {
-                                    Text(text = "Ohh, you already found this pokemon. But don't worry, now you earn 1 more roll to found a new pokemon.", style = TextStyle(textAlign = TextAlign.Center))
-                                    pokemonExists = false
-                                    rolls+=1
-                                } else {
-                                    if (pokemon != null) {
-                                        Text(text = "Congratulations, you found: " + pokemon.name + "!!", style = TextStyle(textAlign = TextAlign.Center))
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Row {
+                                    Column(
+                                        verticalArrangement = Arrangement.Center
+                                    ) {
+                                        if (pokemon == null) {
+                                            Card (
+                                                backgroundColor = Color(0xFFFFFECF),
+                                                contentColor = Color(0xFF565656),
+                                                shape = RoundedCornerShape(100),
+                                                modifier = Modifier.shadow(elevation = 10.dp, shape = RoundedCornerShape(100))
+                                            ){
+                                                Text(
+                                                    text = "Number of rolls: " + MainActivity.rolls,
+                                                    fontWeight = FontWeight.Bold,
+                                                    style = TextStyle(textAlign = TextAlign.Center),
+                                                    modifier = Modifier.padding(3.dp)
+                                                )
+                                            }
+                                            AsyncImage(
+                                                model = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png",
+                                                contentDescription = null,
+                                                colorFilter = ColorFilter.tint(Color.Black)
+                                            )
+                                        } else {
+                                            Card (
+                                                backgroundColor = Color(0xFFFFFECF),
+                                                contentColor = Color(0xFF565656),
+                                                shape = RoundedCornerShape(100),
+                                                modifier = Modifier.shadow(elevation = 10.dp, shape = RoundedCornerShape(100))
+                                            ){
+                                                Text(
+                                                    text = "Number of rolls: " + MainActivity.rolls,
+                                                    fontWeight = FontWeight.Bold,
+                                                    style = TextStyle(textAlign = TextAlign.Center),
+                                                    modifier = Modifier.padding(3.dp)
+                                                )
+                                            }
+                                            AsyncImage(
+                                                model = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/" + pokemon.id + ".png",
+                                                contentDescription = null,
+                                            )
+                                        }
+                                    }
+                                    Column {
+                                        if (pokemonEncontrado) {
+                                            if (pokemon != null) {
+                                                Text(
+                                                    text = "Name: " + pokemon.name,
+                                                    fontWeight = FontWeight.Bold,
+                                                    style = TextStyle(textAlign = TextAlign.Center)
+                                                )
+                                                Text(text = "Pokedex Number: " + pokemon.id)
+                                            }
+                                            if (pokemonExists) {
+                                                Text(
+                                                    text = "Ohh, you already found this pokemon. But don't worry, now you earn 1 more roll to found a new pokemon.",
+                                                    style = TextStyle(textAlign = TextAlign.Center)
+                                                )
+                                                pokemonExists = false
+                                                MainActivity.rolls += 1
+                                            } else {
+                                                if (pokemon != null) {
+                                                    Text(
+                                                        text = "Congratulations, you found: " + pokemon.name + "!!",
+                                                        style = TextStyle(textAlign = TextAlign.Center)
+                                                    )
+                                                }
+                                            }
+                                        }
+                                        if (MainActivity.rolls == 0) {
+                                            Text(
+                                                text = "You don't have any rolls left, wait until tomorrow so you can roll once again",
+                                                fontWeight = FontWeight.Bold,
+                                                style = TextStyle(textAlign = TextAlign.Center)
+                                            )
+
+                                        }
                                     }
                                 }
                             }
-                            Text(text = "Number of rolls: " + rolls, fontWeight = FontWeight.Bold, style = TextStyle(textAlign = TextAlign.Center))
-                            if (rolls==0){
-                                Text(text = "You don't have any rolls left, wait until tomorrow so you can roll once again", fontWeight = FontWeight.Bold, style = TextStyle(textAlign = TextAlign.Center))
-                            }
                         }
                     }
-
                 }
-                Button(
-                    onClick = {
-                        viewModel.getRandomPokemon()
-                        pokemonEncontrado = true
-                    },
-                    shape = RoundedCornerShape(100),
-                    colors = ButtonDefaults.buttonColors(
-                        contentColor = Color.Black,
-                        containerColor = Color(0xFFECE3F6)
-                    ),
-                    modifier = Modifier.shadow(elevation = 10.dp, shape = RoundedCornerShape(100)),
-                ) {
-                    Column(
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
+                Box() {
+                    Button(
+                        onClick = {
+                            viewModel.getRandomPokemon()
+                            pokemonEncontrado = true
+                            MainActivity.rolls -= 1
+                        },
+                        shape = RoundedCornerShape(100),
+                        colors = ButtonDefaults.buttonColors(
+                            contentColor = Color.Black,
+                            containerColor = Color(0xFFECE3F6)
+                        ),
+                        modifier = Modifier.shadow(elevation = 10.dp, shape = RoundedCornerShape(100)),
                     ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.pokeballnegra),
-                            contentDescription = "pokeball",
-                            modifier = Modifier.size(50.dp)
-                        )
+                        Column(
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.pokeballnegra),
+                                contentDescription = "pokeball",
+                                modifier = Modifier.size(50.dp)
+                            )
+                        }
                     }
                 }
             }
         }
     }
 }
+
 
 @Composable
 fun BottomBar(navController: NavController, viewModel: PokemonViewModel) {
@@ -309,4 +362,9 @@ fun BodyMain(
             }
         }
     }
+}
+
+@Composable
+fun rolls(){
+
 }

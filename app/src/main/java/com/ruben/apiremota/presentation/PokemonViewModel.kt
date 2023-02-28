@@ -2,10 +2,10 @@ package com.ruben.apiremota.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ruben.apiremota.MainActivity
 import com.ruben.apiremota.data.PokemonRepository
 import com.ruben.apiremota.ui.screens.PokemonRandomScreenState
 import com.ruben.apiremota.ui.screens.PokemonScreenState
-import com.ruben.apiremota.ui.screens.rolls
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -41,7 +41,7 @@ class PokemonViewModel(private val repository: PokemonRepository) : ViewModel() 
 
     fun getRandomPokemon(){
         viewModelScope.launch(handler) {
-            if (rolls > 0){
+            if (MainActivity.rolls > 0){
                 val pokemon = repository.getRandomPokemon()
                 _uiStateRandom.value = PokemonRandomScreenState.Success(pokemon = pokemon)
             } else {
