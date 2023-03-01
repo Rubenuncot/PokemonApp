@@ -120,7 +120,6 @@ private fun switchRandomScreen(
         is PokemonRandomScreenState.Error ->
             Text(text = "Ha ocurrido un fallo inesperado")
         PokemonRandomScreenState.Loading -> Column() {
-            pokemon = null
         }
     }
 }
@@ -571,6 +570,7 @@ fun GuessScreen(pokemon: Pokemon?, viewModel: PokemonViewModel) {
                 confirmButton = {
                     TextButton(
                         onClick = {
+                            MainActivity.pokemon = null
                             bottomBarClick = false
                         }
                     ) {
