@@ -4,12 +4,9 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ruben.apiremota.MainActivity
 import com.ruben.apiremota.data.PokemonRepository
-import com.ruben.apiremota.navigation.AppScreens
 import com.ruben.apiremota.ui.screens.PokemonRandomScreenState
 import com.ruben.apiremota.ui.screens.PokemonScreenState
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,19 +19,11 @@ class PokemonViewModel(private val repository: PokemonRepository) : ViewModel() 
     val uiState: StateFlow<PokemonScreenState> = _uiState.asStateFlow()
     val randomUiState: StateFlow<PokemonRandomScreenState> = _uiStateRandom.asStateFlow()
 
-    private val handler = CoroutineExceptionHandler { _, _ ->
-        _uiState.value = PokemonScreenState.Error(
-            "Ha ocurrido un error, revise su conexión a internet o inténtelo de nuevo " +
-                "más tarde"
-        )
-    }
 
     fun getPokemons() {
-        viewModelScope.launch(handler) {
+        viewModelScope.launch {
             val pokemons = repository.getPokemons()
             val currentPokemons = if (_uiState.value is PokemonScreenState.Success) {
-                (_uiState.value as PokemonScreenState.Success).pokemon
-            } else if (_uiState.value is PokemonScreenState.Loading){
                 (_uiState.value as PokemonScreenState.Success).pokemon
             } else emptyList()
             val totalPokemons = currentPokemons + pokemons
@@ -44,24 +33,22 @@ class PokemonViewModel(private val repository: PokemonRepository) : ViewModel() 
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun getRandomPokemon(){
-        viewModelScope.launch(handler) {
-            if (MainActivity.rolls > 0){
-                val pokemon = repository.getRandomPokemon()
-                _uiStateRandom.value = PokemonRandomScreenState.Success(pokemon = pokemon)
-            } else {
-                getRolls()
-            }
+        viewModelScope.launch{
+            val pokemon = repository.getRandomPokemon()
+            _uiStateRandom.value = PokemonRandomScreenState.Success(pokemon = pokemon)
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getRolls(){
-        viewModelScope.launch(handler) {
-            MainActivity.rolls = repository.getRolls()
+    fun getRolls(): Int{
+        var rolls = 0
+        viewModelScope.launch {
+             rolls = repository.getRolls()
         }
+        return rolls
     }
 
-    fun inserRolls(rolls: Int, openDialog: Boolean){
+    fun insertRolls(rolls: Int, openDialog: Boolean){
         viewModelScope.launch {
             repository.insertRolls(rolls, openDialog)
         }

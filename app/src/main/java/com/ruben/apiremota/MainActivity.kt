@@ -13,22 +13,18 @@ import androidx.navigation.navArgument
 import com.ruben.apiremota.data.PokemonRepository
 import com.ruben.apiremota.data.local.PokemonDatasource
 import com.ruben.apiremota.data.local.RollsDatasource
+import com.ruben.apiremota.data.remote.Pokemon
 import com.ruben.apiremota.data.remote.PokemonRemoteDatasource
 import com.ruben.apiremota.data.remote.RetrofitBuilder
 import com.ruben.apiremota.navigation.AppScreens
 import com.ruben.apiremota.presentation.PokemonViewModel
 import com.ruben.apiremota.ui.screens.DetailScreen
 import com.ruben.apiremota.ui.screens.SearchScreen
-import com.ruben.apiremota.ui.theme.MaxRolls
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.util.Date
-
 class MainActivity : ComponentActivity() {
     companion object {
-        var index: Int = 0
-        var rolls: Int = MaxRolls
-        var timeNow: LocalDateTime? = null
+        var index: Int = 1
+        var rolls: Int = 0
+        var pokemon: Pokemon? = null
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -42,6 +38,12 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             val navController = rememberNavController()
+            rolls = viewModel.getRolls()
+            rolls = if (rolls == 0){
+                5
+            } else {
+                viewModel.getRolls()
+            }
 
             NavHost(
                 navController = navController,
