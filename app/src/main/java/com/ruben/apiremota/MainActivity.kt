@@ -5,6 +5,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -18,7 +21,9 @@ import com.ruben.apiremota.data.remote.PokemonRemoteDatasource
 import com.ruben.apiremota.data.remote.RetrofitBuilder
 import com.ruben.apiremota.navigation.AppScreens
 import com.ruben.apiremota.presentation.PokemonViewModel
+import com.ruben.apiremota.presentation.RollsViewModel
 import com.ruben.apiremota.ui.screens.DetailScreen
+import com.ruben.apiremota.ui.screens.RollsScreenState
 import com.ruben.apiremota.ui.screens.SearchScreen
 class MainActivity : ComponentActivity() {
     companion object {
@@ -27,6 +32,7 @@ class MainActivity : ComponentActivity() {
         var pokemon: Pokemon? = null
     }
 
+    @OptIn(ExperimentalLifecycleComposeApi::class)
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,22 +41,28 @@ class MainActivity : ComponentActivity() {
         val rollsDatasource = RollsDatasource(applicationContext)
         val repository = PokemonRepository(localDatasource, apiDatasource, rollsDatasource)
         val viewModel = PokemonViewModel(repository)
+        val rollsViewModel = RollsViewModel(repository = repository)
 
+        rollsViewModel.getRolls()
         setContent {
             val navController = rememberNavController()
-            rolls = viewModel.getRolls()
-            rolls = if (rolls == 0){
-                5
-            } else {
-                viewModel.getRolls()
-            }
-
             NavHost(
                 navController = navController,
                 startDestination = AppScreens.Search.route
             ) {
                 composable(AppScreens.Search.route) {
-                    SearchScreen(viewModel, navController, index)
+                    val rollsScreenState by rollsViewModel.uiState.collectAsStateWithLifecycle()
+                    when(rollsScreenState){
+                        is RollsScreenState.Success -> {
+                            rolls = if ((rollsScreenState as RollsScreenState.Success).rolls == 0){
+                                5
+                            } else {
+                                (rollsScreenState as RollsScreenState.Success).rolls
+                            }
+                        }
+                        else -> {}
+                    }
+                    SearchScreen(viewModel, navController, index, repository = repository)
                 }
                 composable(
                     route = "detail/{id}/{name}/{height}/{weight}/{description}",

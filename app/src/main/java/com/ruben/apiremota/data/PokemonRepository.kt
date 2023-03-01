@@ -31,10 +31,13 @@ class PokemonRepository(
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     suspend fun getRolls(): Int {
-        var rollsahora = rollsDatasource.getLast().rolls
-        return rollsDatasource.getLast().rolls
+        var rolls = 0
+        if(rollsDatasource.getLast() != null){
+            rolls = rollsDatasource.getLast().rolls
+        }
+        return rolls
+
     }
 
     suspend fun insertRolls(rolls: Int, openDialog: Boolean) {

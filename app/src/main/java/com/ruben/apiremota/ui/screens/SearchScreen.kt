@@ -40,35 +40,45 @@ import com.ruben.apiremota.MainActivity
 import com.ruben.apiremota.MainActivity.Companion.pokemon
 import com.ruben.apiremota.MainActivity.Companion.rolls
 import com.ruben.apiremota.R
+import com.ruben.apiremota.data.PokemonRepository
 import com.ruben.apiremota.data.local.PokemonEntity
 import com.ruben.apiremota.data.remote.Pokemon
 import com.ruben.apiremota.navigation.AppScreens
 import com.ruben.apiremota.presentation.PokemonViewModel
+import com.ruben.apiremota.presentation.RollsViewModel
 import com.ruben.apiremota.ui.components.PokemonCell
 import java.util.*
 
 var added = false
 var pokemonList = mutableListOf<PokemonEntity>()
 var pokemonExists = false
-var pokemonActual: Pokemon? = null
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
-fun SearchScreen(viewModel: PokemonViewModel, navController: NavController, index: Int) {
+fun SearchScreen(viewModel: PokemonViewModel, navController: NavController, index: Int, repository: PokemonRepository) {
     Scaffold(
         bottomBar = {
             BottomBar(
                 navController = navController,
                 viewModel = viewModel,
-                items = listOf("Game", "Search", "List")
+                items = listOf("Game", "Search", "List"),
             )
         },
     ) {
         val screenState by viewModel.uiState.collectAsStateWithLifecycle()
         val randomScreenState by viewModel.randomUiState.collectAsStateWithLifecycle()
         val scrollState = rememberScrollState()
+        val rollsViewModel = RollsViewModel(repository = repository)
         switchRandomScreen(randomScreenState)
+        rollsViewModel.getRolls()
+        val rollsScreenState by rollsViewModel.uiState.collectAsStateWithLifecycle()
+        when(rollsScreenState){
+            is RollsScreenState.Success -> {
+                rolls = (rollsScreenState as RollsScreenState.Success).rolls
+            }
+            else -> {}
+        }
         when (index) {
             0 ->
                 GuessScreen(pokemon = pokemon, viewModel = viewModel)
@@ -246,13 +256,13 @@ fun Body(pokemon: Pokemon?, viewModel: PokemonViewModel, navController: NavContr
                 Box() {
                     Button(
                         onClick = {
-                            viewModel.getRandomPokemon()
-                            pokemonEncontrado = true
-
                             when(rolls){
                                 0 -> openDialog.value = true
-                                4 -> rolls -= 1
-                                else -> rolls -= 1
+                                else -> {
+                                    viewModel.getRandomPokemon()
+                                    pokemonEncontrado = true
+                                    rolls -= 1
+                                }
                             }
 
                             viewModel.insertRolls(rolls, openDialog.value)
@@ -459,6 +469,7 @@ fun GuessScreen(pokemon: Pokemon?, viewModel: PokemonViewModel) {
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(30.dp)
                     ) {
                         androidx.compose.material.TextField(
                             value = pokeName.value,
@@ -486,20 +497,17 @@ fun GuessScreen(pokemon: Pokemon?, viewModel: PokemonViewModel) {
                                     ),
                                     modifier = Modifier.shadow(
                                         elevation = 10.dp,
-                                        shape = RoundedCornerShape(100)
+                                        shape = RoundedCornerShape(40)
                                     ),
                                 )
                                 {
-                                    Column(
-                                        verticalArrangement = Arrangement.Center,
+                                    Box(
+                                        contentAlignment = Alignment.Center
                                     ) {
-                                        Icon(Icons.Default.Search, contentDescription = "")
-                                        androidx.compose.material.Text(
-                                            text = "Search",
-                                            modifier = Modifier.size(50.dp)
-                                        )
+                                        Column(verticalArrangement = Arrangement.Center) {
+                                            Icon(Icons.Default.Search, contentDescription = "")
+                                        }
                                     }
-
                                 }
                                 Button(
                                     onClick = {
@@ -532,10 +540,6 @@ fun GuessScreen(pokemon: Pokemon?, viewModel: PokemonViewModel) {
                                         horizontalAlignment = Alignment.CenterHorizontally
                                     ) {
                                         Icon(Icons.Default.Check, contentDescription = "")
-                                        androidx.compose.material.Text(
-                                            text = "Check",
-                                            modifier = Modifier.size(50.dp)
-                                        )
                                     }
 
                                 }

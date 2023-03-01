@@ -39,15 +39,6 @@ class PokemonViewModel(private val repository: PokemonRepository) : ViewModel() 
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun getRolls(): Int{
-        var rolls = 0
-        viewModelScope.launch {
-             rolls = repository.getRolls()
-        }
-        return rolls
-    }
-
     fun insertRolls(rolls: Int, openDialog: Boolean){
         viewModelScope.launch {
             repository.insertRolls(rolls, openDialog)
