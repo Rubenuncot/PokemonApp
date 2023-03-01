@@ -13,6 +13,7 @@ import androidx.navigation.navArgument
 import com.ruben.apiremota.data.PokemonRepository
 import com.ruben.apiremota.data.local.PokemonDatasource
 import com.ruben.apiremota.data.local.RollsDatasource
+import com.ruben.apiremota.data.remote.Pokemon
 import com.ruben.apiremota.data.remote.PokemonRemoteDatasource
 import com.ruben.apiremota.data.remote.RetrofitBuilder
 import com.ruben.apiremota.navigation.AppScreens
@@ -29,6 +30,7 @@ class MainActivity : ComponentActivity() {
         var index: Int = 0
         var rolls: Int = MaxRolls
         var timeNow: LocalDateTime? = null
+        var pokemonRandom: Pokemon? = null
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
