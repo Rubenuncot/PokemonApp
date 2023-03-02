@@ -52,6 +52,7 @@ import java.util.*
 var added = false
 var pokemonList = mutableListOf<PokemonEntity>()
 var pokemonExists = false
+var insert = true
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalLifecycleComposeApi::class)
@@ -70,7 +71,7 @@ fun SearchScreen(viewModel: PokemonViewModel, navController: NavController, inde
         val randomScreenState by viewModel.randomUiState.collectAsStateWithLifecycle()
         val scrollState = rememberScrollState()
         val rollsViewModel = RollsViewModel(repository = repository)
-        switchRandomScreen(randomScreenState)
+        switchRandomScreen(randomScreenState, insert)
         rollsViewModel.getRolls()
         val rollsScreenState by rollsViewModel.uiState.collectAsStateWithLifecycle()
         when(rollsScreenState){
@@ -98,6 +99,7 @@ fun SearchScreen(viewModel: PokemonViewModel, navController: NavController, inde
 @Composable
 private fun switchRandomScreen(
     randomScreenState: PokemonRandomScreenState,
+    insert: Boolean
 ) {
     when (randomScreenState) {
         is PokemonRandomScreenState.Success -> {
@@ -114,7 +116,9 @@ private fun switchRandomScreen(
             if (pokemonList.contains(pokemonRandomEntity)) {
                 pokemonExists = true
             } else {
-                pokemonList.add(pokemonRandomEntity)
+                if (insert){
+                    pokemonList.add(pokemonRandomEntity)
+                }
             }
         }
         is PokemonRandomScreenState.Error ->
@@ -260,6 +264,7 @@ fun Body(pokemon: Pokemon?, viewModel: PokemonViewModel, navController: NavContr
                                 else -> {
                                     viewModel.getRandomPokemon(true)
                                     pokemonEncontrado = true
+                                    insert = true
                                     rolls -= 1
                                 }
                             }
@@ -486,6 +491,7 @@ fun GuessScreen(pokemon: Pokemon?, viewModel: PokemonViewModel) {
                                             fullRolls = true
                                         } else {
                                             fullRolls = false
+                                            insert = false
                                             viewModel.getRandomPokemon(false)
                                         }
                                     },
