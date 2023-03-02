@@ -32,9 +32,9 @@ class PokemonViewModel(private val repository: PokemonRepository) : ViewModel() 
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getRandomPokemon(){
+    fun getRandomPokemon(insert: Boolean){
         viewModelScope.launch{
-            val pokemon = repository.getRandomPokemon()
+            val pokemon = repository.getRandomPokemon(insert)
             _uiStateRandom.value = PokemonRandomScreenState.Success(pokemon = pokemon)
         }
     }

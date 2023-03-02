@@ -258,7 +258,7 @@ fun Body(pokemon: Pokemon?, viewModel: PokemonViewModel, navController: NavContr
                             when(rolls){
                                 0 -> openDialog.value = true
                                 else -> {
-                                    viewModel.getRandomPokemon()
+                                    viewModel.getRandomPokemon(true)
                                     pokemonEncontrado = true
                                     rolls -= 1
                                 }
@@ -486,7 +486,7 @@ fun GuessScreen(pokemon: Pokemon?, viewModel: PokemonViewModel) {
                                             fullRolls = true
                                         } else {
                                             fullRolls = false
-                                            viewModel.getRandomPokemon()
+                                            viewModel.getRandomPokemon(false)
                                         }
                                     },
                                     shape = RoundedCornerShape(100),

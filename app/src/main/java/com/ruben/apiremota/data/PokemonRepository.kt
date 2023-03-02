@@ -15,10 +15,12 @@ class PokemonRepository(
         return pokemonLocalDatasource.getPokemons()
     }
 
-    suspend fun getRandomPokemon(): Pokemon {
+    suspend fun getRandomPokemon(insert: Boolean): Pokemon {
         val apiResponse = pokemonRemoteDatasource.getRandomPokemonByIDd()
         apiResponse.flavorTextEntry = getSpecie(apiResponse.id).flavor_text
-        pokemonLocalDatasource.createPokemon(apiResponse)
+        if (insert){
+            pokemonLocalDatasource.createPokemon(apiResponse)
+        }
         return apiResponse
     }
 
